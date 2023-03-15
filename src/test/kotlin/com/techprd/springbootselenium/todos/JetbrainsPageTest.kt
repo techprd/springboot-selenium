@@ -15,24 +15,26 @@ class JetbrainsPageTest(jetbrainsMainPage: JetbrainsMainPage) : BehaviorSpec() {
 
     init {
 
-        beforeAny {
+        beforeSpec {
             Configuration.browserSize = "1280x800"
             SelenideLogger.addListener("allure", AllureSelenide())
+        }
+
+        beforeContainer {
             Selenide.open("https://www.jetbrains.com/")
         }
 
         Given("I want to test main page") {
-
-            beforeEach {
-                Selenide.open("https://www.jetbrains.com/")
-            }
 
             When("I search for Selenium term") {
                 jetbrainsMainPage.searchButton.click()
 
                 Selenide.element("[data-test='search-input']").sendKeys("Selenium")
                 Selenide.element("button[data-test='full-search-button']").click()
-                Selenide.element("input[data-test='search-input']").shouldHave(Condition.attribute("value", "Selenium"))
+
+                Then("search input should exists") {
+                    Selenide.element("input[data-test='search-input']").shouldHave(Condition.attribute("value", "Selenium"))
+                }
             }
 
             When("toolsMenu") {
