@@ -6,5 +6,6 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @ConfigurationProperties(prefix = "configs")
 class AppConfigs(
-    var headless: Boolean = true
+    var headless: Boolean = true,
+    var timeout: Long = 10000
 )

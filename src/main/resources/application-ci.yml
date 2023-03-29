@@ -1,0 +1,3 @@
+configs:
+  headless: true
+  timeout: 12000
