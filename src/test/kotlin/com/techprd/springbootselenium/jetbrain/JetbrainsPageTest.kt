@@ -4,11 +4,15 @@ import com.codeborne.selenide.Condition.attribute
 import com.codeborne.selenide.Condition.visible
 import com.codeborne.selenide.Selenide.*
 import com.techprd.springbootselenium.pages.JetbrainsMainPage
+import io.kotest.assertions.retry
+import io.kotest.core.annotation.Tags
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.string.shouldBeEqualIgnoringCase
 import org.springframework.boot.test.context.SpringBootTest
+import kotlin.time.Duration.Companion.seconds
 
 @SpringBootTest
+@Tags("Jetbrains")
 class JetbrainsPageTest(jetbrainsMainPage: JetbrainsMainPage) : BehaviorSpec() {
 
     init {
@@ -39,7 +43,10 @@ class JetbrainsPageTest(jetbrainsMainPage: JetbrainsMainPage) : BehaviorSpec() {
 
             When("navigationToAllTools") {
                 jetbrainsMainPage.seeDeveloperToolsButton.click()
-                jetbrainsMainPage.findYourToolsButton.click()
+
+                retry(2, 30.seconds) {
+                    jetbrainsMainPage.findYourToolsButton.click()
+                }
 
                 element("#products-page").shouldBe(visible)
 
